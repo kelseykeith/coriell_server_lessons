@@ -7,6 +7,6 @@
 
 ### Questions
 
-1.
-2.
-3.
+1. View the beginning of the file `README.md`.
+2. Read the entire `README.md` file.
+3. Make a new file and write something in it.
