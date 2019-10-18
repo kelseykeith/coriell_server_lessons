@@ -1,37 +1,45 @@
-## Welcome to GitHub Pages
+# Coriell Bioinformatics Server Lessons
 
-You can use the [editor on GitHub](https://github.com/kelseykeith/coriell_server_lessons/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+### Getting Started
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+#### Mac
 
-### Markdown
+1. Connect through terminal
+2. Should have Cisco VPN installed to reach server from home
+3. Download and set up Macfusion
+4. Download Macdown or another text editor like Sublime text
+5. homebrew
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+#### PC
 
-```markdown
-Syntax highlighted code block
+1. Download PuTTy
+2. Download WinSCP
+3. Download a markdown editor
 
-# Header 1
-## Header 2
-### Header 3
+-
 
-- Bulleted
-- List
+### Resources
 
-1. Numbered
-2. List
 
-**Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image](src)
-```
+-
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Server Basics
 
-### Jekyll Themes
+#### Week 1
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/kelseykeith/coriell_server_lessons/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+**Terminus** <https://web.mit.edu/mprat/Public/web/Terminus/Web/main.html>
 
-### Support or Contact
+- slides
+- Practice Exercises
+  - Command-Line Basic Navigation
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+sudo mkdir /mnt/data/coriell_bioinformatics_server_lessons
+cd /mnt/data/
+sudo chown kkeith:research coriell_bioinformatics_server_lessons/
+chmod 777 coriell_bioinformatics_server_lessons/
+cd coriell_bioinformatics_server_lessons/
+git clone git@github.com:kelseykeith/coriell_server_lessons.git
+
+
+
