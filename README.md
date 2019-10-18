@@ -16,13 +16,13 @@
 3. Download and install Joplin <https://joplinapp.org/>. You'll use this for documenting your work.
 4. Download and install WinSCP <https://winscp.net/eng/index.php>. This will let you transfer files to and from your computer and the server.
 
--
+---
 
 ### Resources
 
 
 
--
+---
 
 ### Server Basics
 
