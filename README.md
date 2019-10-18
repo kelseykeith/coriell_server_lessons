@@ -4,17 +4,17 @@
 
 #### Mac
 
-1. Connect through terminal
-2. Should have Cisco VPN installed to reach server from home
-3. Download and set up Macfusion
-4. Download Macdown or another text editor like Sublime text
-5. homebrew
+1. You'll connect to the server through terminal, so you don't need to install any software. I suggest pinning terminal to the dock though.
+2. You should already have the Cisco AnyConnect VPN installed on your computer, but if you don't, follow the instructions [here](Cisco_AnyConnect_installation_instructions.pdf). This will allow you to connect to the server from outside of Coriell.
+3. Download and install MacDown <https://macdown.uranusjr.com/>. You'll use this for documenting your work.
+4. Download and install Macfusion. Follow the directions [here](how_to_install_macfusion.md).  This will let you transfer files to and from your computer and the server. This is the hardest thing to install, so if it doesn't work come ask for help!
 
 #### PC
 
-1. Download PuTTy
-2. Download WinSCP
-3. Download a markdown editor
+1. Download and install PuTTy <https://www.chiark.greenend.org.uk/~sgtatham/putty/>. This will let you connect to the server.
+2. You should already have the Cisco AnyConnect VPN installed on your computer, but if you don't, follow the instructions [here](Cisco_AnyConnect_installation_instructions.pdf). This will allow you to connect to the server from outside of Coriell.
+3. Download and install Joplin <https://joplinapp.org/>. You'll use this for documenting your work.
+4. Download and install WinSCP <https://winscp.net/eng/index.php>. This will let you transfer files to and from your computer and the server.
 
 -
 
@@ -26,20 +26,15 @@
 
 ### Server Basics
 
-#### Week 1
+#### Week 1 - *2019-10-22*
 
 **Terminus** <https://web.mit.edu/mprat/Public/web/Terminus/Web/main.html>
 
 - slides
 - Practice Exercises
-  - Command-Line Basic Navigation
-
-sudo mkdir /mnt/data/coriell_bioinformatics_server_lessons
-cd /mnt/data/
-sudo chown kkeith:research coriell_bioinformatics_server_lessons/
-chmod 777 coriell_bioinformatics_server_lessons/
-cd coriell_bioinformatics_server_lessons/
-git clone git@github.com:kelseykeith/coriell_server_lessons.git
+  - Command-Line Basic Navigation [Practice Exercises](server_basics/viewing_stuff_practice.md)
+  - Viewing Files [Practice Exercises](server_basics/viewing_files_practice.md)
+  - Navigating the Filesystem [Practice Exercises](server_basics/navigating_practice.md)
 
 
 
