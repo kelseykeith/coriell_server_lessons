@@ -32,7 +32,9 @@
 
 #### *2019-10-22* Week 1
 
-**Terminus** <https://web.mit.edu/mprat/Public/web/Terminus/Web/main.html>
+Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat/Public/web/Terminus/Web/main.html>
+
+#### *2019-10-29* Week 2
 
 - slides
 - Practice Exercises
