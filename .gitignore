@@ -1,2 +1,6 @@
-# folders to ignore
+### folders to ignore
 server_basics/practice_directory/
+
+### file types to ignore
+# the Mac index files
+.DS_Store
