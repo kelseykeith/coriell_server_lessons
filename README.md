@@ -44,6 +44,8 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
   - File Wrangling [Practice Exercises](server_basics/file_wrangling_practice.md)
   - Wildcard [Practice Exercises](server_basics/wildcard_practice.md)
   - Miscellaneous [Practice Exercises](server_basics/miscellaneous_practice.md)
+  - File Wrangling Part 2 [Practice Exercises](server_basics/file_wrangling_practice2.md)
+  - I/O Operators [Practice Exercises](server_basics/io_operators_practice.md)
 
 
 
