@@ -41,6 +41,7 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
   - Command-Line Basic Navigation [Practice Exercises](server_basics/viewing_stuff_practice.md)
   - Viewing Files [Practice Exercises](server_basics/viewing_files_practice.md)
   - Navigating the Filesystem [Practice Exercises](server_basics/navigating_practice.md)
+  - File Wrangling [Practice Exercises](server_basics/file_wrangling_practice.md)
 
 
 
