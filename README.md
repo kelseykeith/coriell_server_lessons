@@ -43,6 +43,7 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
   - Navigating the Filesystem [Practice Exercises](server_basics/navigating_practice.md)
   - File Wrangling [Practice Exercises](server_basics/file_wrangling_practice.md)
   - Wildcard [Practice Exercises](server_basics/wildcard_practice.md)
+  - Miscellaneous [Practice Exercises](server_basics/miscellaneous_practice.md)
 
 
 
