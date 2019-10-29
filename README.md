@@ -30,15 +30,18 @@
 
 ### Server Basics
 
-#### *2019-10-22* Week 1
+#### Week 1 - *2019-10-22*
 
 Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat/Public/web/Terminus/Web/main.html>
 
-#### *2019-10-29* Week 2
+#### Week 2 - *2019-10-29*
 
-- slides
+- [slides](server_basics/week2/how_to_use_the_server_week2.pdf)
 - Practice Exercises
   - Command-Line Basic Navigation [Practice Exercises](server_basics/viewing_stuff_practice.md)
+
+#### Week 3 - *2019-11-05*
+
   - Viewing Files [Practice Exercises](server_basics/viewing_files_practice.md)
   - Navigating the Filesystem [Practice Exercises](server_basics/navigating_practice.md)
   - File Wrangling [Practice Exercises](server_basics/file_wrangling_practice.md)
