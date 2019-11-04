@@ -38,7 +38,7 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
 
 - [slides](server_basics/week2/how_to_use_the_server_week2.pdf)
 - Practice Exercises
-  - Command-Line Basic Navigation [Practice Exercises](server_basics/viewing_stuff_practice.md)
+  - Command-Line Basic Navigation [Practice Exercises](server_basics/week2/viewing_stuff_practice.md)
 
 #### Week 3 - *2019-11-05*
 
