@@ -30,22 +30,29 @@
 
 ### Server Basics
 
-#### Week 1 - *2019-10-22*
+#### Week 1 - **Terminus** - *2019-10-22*
 
 Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat/Public/web/Terminus/Web/main.html>
 
-#### Week 2 - *2019-10-29*
+#### Week 2 - **How to Use the Server** - *2019-10-29*
 
 - [slides](server_basics/week2/how_to_use_the_server_week2.pdf)
 - Practice Exercises
-  - Command-Line Basic Navigation [Practice Exercises](server_basics/week2/viewing_stuff_practice.md)
+  - Command-Line Basic Navigation [Practice Exercises](server_basics/week2/viewing_stuff_practice.md), [ANSWERS](server_basics/week2/viewing_stuff_practice_ANSWERS.md)
 
-#### Week 3 - *2019-11-05*
+#### Week 3 - **How to Use the Server, cont.** - *2019-11-05*
 
-  - Viewing Files [Practice Exercises](server_basics/viewing_files_practice.md)
-  - Navigating the Filesystem [Practice Exercises](server_basics/navigating_practice.md)
-  - File Wrangling [Practice Exercises](server_basics/file_wrangling_practice.md)
-  - Wildcard [Practice Exercises](server_basics/wildcard_practice.md)
+- [slides]()
+- Practice Exercises
+  - Viewing Files [Practice Exercises](server_basics/week3/viewing_files_practice.md), [ANSWERS](server_basics/week3/viewing_files_practice_ANSWERS.md)
+  - Navigating the Filesystem [Practice Exercises](server_basics/week3/navigating_practice.md), [ANSWERS](server_basics/week3/navigating_practice_ANSWERS.md)
+  - File Wrangling [Practice Exercises](server_basics/week3/file_wrangling_practice.md), [ANSWERS](server_basics/week3/file_wrangling_practice_ANSWERS.md)
+
+#### Week 4 -- **How to Use the Server, cont.** - *2019-11-12*
+
+- slides
+- Practice Exercises
+  - Wildcards [Practice Exercises](server_basics/wildcard_practice.md)
   - Miscellaneous [Practice Exercises](server_basics/miscellaneous_practice.md)
   - File Wrangling Part 2 [Practice Exercises](server_basics/file_wrangling_practice2.md)
   - I/O Operators [Practice Exercises](server_basics/io_operators_practice.md)
