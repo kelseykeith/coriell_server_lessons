@@ -42,7 +42,7 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
 
 #### Week 3 - **How to Use the Server, cont.** - *2019-11-05*
 
-- [slides]()
+- [slides](server_basics/week3/how_to_use_the_server_week3.pdf)
 - Practice Exercises
   - Viewing Files [Practice Exercises](server_basics/week3/viewing_files_practice.md), [ANSWERS](server_basics/week3/viewing_files_practice_ANSWERS.md)
   - Navigating the Filesystem [Practice Exercises](server_basics/week3/navigating_practice.md), [ANSWERS](server_basics/week3/navigating_practice_ANSWERS.md)
