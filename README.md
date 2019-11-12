@@ -48,13 +48,18 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
   - Navigating the Filesystem [Practice Exercises](server_basics/week3/navigating_practice.md), [ANSWERS](server_basics/week3/navigating_practice_ANSWERS.md)
   - File Wrangling [Practice Exercises](server_basics/week3/file_wrangling_practice.md), [ANSWERS](server_basics/week3/file_wrangling_practice_ANSWERS.md)
 
-#### Week 4 -- **How to Use the Server, cont.** - *2019-11-12*
+#### Week 4 - **How to Use the Server, cont.** - *2019-11-12*
+
+- [slides](server_basics/week4/)
+- Practice Exercises
+  - Wildcards [Practice Exercises](server_basics/week4/wildcard_practice.md), [ANSWERS](server_basics/week4/wildcard_practice_exercises_ANSWERS.md)
+  - Miscellaneous [Practice Exercises](server_basics/week4/miscellaneous_practice.md), [ANSWERS](server_basics/week4/miscellaneous_practice_exercises_ANSWERS.md)
+  - File Wrangling Part 2 [Practice Exercises](server_basics/week4/file_wrangling_practice2.md), [ANSWERS](server_basics/week4/file_wrangling_practice2_ANSWERS.md)
+
+#### Week 5 - **How to Use the Server, cont.** - *2019-11-19*
 
 - slides
 - Practice Exercises
-  - Wildcards [Practice Exercises](server_basics/wildcard_practice.md)
-  - Miscellaneous [Practice Exercises](server_basics/miscellaneous_practice.md)
-  - File Wrangling Part 2 [Practice Exercises](server_basics/file_wrangling_practice2.md)
   - I/O Operators [Practice Exercises](server_basics/io_operators_practice.md)
 
 
