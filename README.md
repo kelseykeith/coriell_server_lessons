@@ -50,7 +50,7 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
 
 #### Week 4 - **How to Use the Server, cont.** - *2019-11-12*
 
-- [slides](server_basics/week4/)
+- [slides](server_basics/week4/how_to_use_the_server_week4.pdf)
 - Practice Exercises
   - Wildcards [Practice Exercises](server_basics/week4/wildcard_practice.md), [ANSWERS](server_basics/week4/wildcard_practice_exercises_ANSWERS.md)
   - Miscellaneous [Practice Exercises](server_basics/week4/miscellaneous_practice.md), [ANSWERS](server_basics/week4/miscellaneous_practice_exercises_ANSWERS.md)
