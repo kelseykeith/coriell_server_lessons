@@ -60,7 +60,9 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
 
 - slides
 - Practice Exercises
-  - I/O Operators [Practice Exercises](server_basics/io_operators_practice.md)
+  - I/O Operators [Practice Exercises](server_basics/week5/io_operators_practice.md)
+  - Managing Processed [Practice Exercises](server_basics/week5/managing_processes_practice_exercises.md)
+  - Running Processes in the Background [Practice Exercises](server_basics/week5/background_processes_practice_exercises.md)
 
 
 
