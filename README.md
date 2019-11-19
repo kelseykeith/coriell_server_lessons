@@ -66,7 +66,7 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
 
 - slides
 - Practice Exercises
-  - Managing Processed [Practice Exercises](server_basics/week6/managing_processes_practice_exercises.md)
+  - Managing Processes [Practice Exercises](server_basics/week6/managing_processes_practice_exercises.md)
   - Running Processes in the Background [Practice Exercises](server_basics/week6/background_processes_practice_exercises.md)
 
 
