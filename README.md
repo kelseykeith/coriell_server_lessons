@@ -58,11 +58,16 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
 
 #### Week 5 - **How to Use the Server, cont.** - *2019-11-19*
 
-- slides
+- [slides](server_basics/week5/how_to_use_the_server_week5.pdf)
 - Practice Exercises
   - I/O Operators [Practice Exercises](server_basics/week5/io_operators_practice.md)
-  - Managing Processed [Practice Exercises](server_basics/week5/managing_processes_practice_exercises.md)
-  - Running Processes in the Background [Practice Exercises](server_basics/week5/background_processes_practice_exercises.md)
+
+#### Week 6 - **How to Use the Server, cont.** - *2019-12-03*
+
+- slides
+- Practice Exercises
+  - Managing Processed [Practice Exercises](server_basics/week6/managing_processes_practice_exercises.md)
+  - Running Processes in the Background [Practice Exercises](server_basics/week6/background_processes_practice_exercises.md)
 
 
 
