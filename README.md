@@ -88,7 +88,7 @@ Possible colors:
 - white
 - default
 
--
+---
 
 ### Git
 
