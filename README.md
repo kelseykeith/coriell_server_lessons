@@ -25,6 +25,7 @@
 ### Resources
 
 - tmux cheatsheet <https://gist.github.com/MohamedAlaa/2961058>
+- git book <https://git-scm.com/book/en/v2>
 
 ---
 
@@ -64,7 +65,7 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
 
 #### Week 6 - **How to Use the Server, cont.** - *2019-12-03*
 
-- slides
+- [slides](server_basics/week6/how_to_use_the_server_week6.pdf)
 - Practice Exercises
   - Managing Processes [Practice Exercises](server_basics/week6/managing_processes_practice_exercises.md), [ANSWERS](server_basics/week6/managing_processes_practice_exercises_ANSWERS.md)
   - Running Processes in the Background [Practice Exercises](server_basics/week6/background_processes_practice_exercises.md), [ANSWERS](server_basics/week6/background_processes_practice_exercises_ANSWERS.md)
@@ -91,6 +92,12 @@ Possible colors:
 ---
 
 ### Git
+
+- slides
+- References
+	- git book <https://git-scm.com/book/en/v2>
+	- Adding SSH keys to your GitHub account <https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh>
+	- `.gitignore` <https://git-scm.com/docs/gitignore>
 
 ---
 
