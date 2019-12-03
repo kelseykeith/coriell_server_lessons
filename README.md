@@ -24,7 +24,7 @@
 
 ### Resources
 
-
+- tmux cheatsheet <https://gist.github.com/MohamedAlaa/2961058>
 
 ---
 
@@ -66,8 +66,33 @@ Learn basic terminal commands by playing **Terminus** <https://web.mit.edu/mprat
 
 - slides
 - Practice Exercises
-  - Managing Processes [Practice Exercises](server_basics/week6/managing_processes_practice_exercises.md)
-  - Running Processes in the Background [Practice Exercises](server_basics/week6/background_processes_practice_exercises.md)
+  - Managing Processes [Practice Exercises](server_basics/week6/managing_processes_practice_exercises.md), [ANSWERS](server_basics/week6/managing_processes_practice_exercises_ANSWERS.md)
+  - Running Processes in the Background [Practice Exercises](server_basics/week6/background_processes_practice_exercises.md), [ANSWERS](server_basics/week6/background_processes_practice_exercises_ANSWERS.md)
+- References
+	- tmux cheatsheet <https://gist.github.com/MohamedAlaa/2961058>
+
+##### Change the color of the bottom bar in tmux
+
+Thanks to Himani for asking and this Stack Exchange post <https://unix.stackexchange.com/questions/60968/tmux-bottom-bar-color-change/60969>, here's how you change the color of the bottom bar in tmux.
+
+In tmux, hit `Ctrl-B`, then type `:set status-style "bg=magenta"`. Replace magenta with another color from the list for other colors.
+
+Possible colors: 
+- black
+- red
+- green
+- yellow
+- blue
+- magenta
+- cyan
+- white
+- default
+
+-
+
+### Git
+
+---
 
 
 
