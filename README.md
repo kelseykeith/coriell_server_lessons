@@ -93,11 +93,13 @@ Possible colors:
 
 ### Git
 
-- slides
+- [slides](git/git.pdf)
 - References
+	- Install git <https://git-scm.com/download>
 	- git book <https://git-scm.com/book/en/v2>
 	- Adding SSH keys to your GitHub account <https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh>
 	- `.gitignore` <https://git-scm.com/docs/gitignore>
+	- GitHub Desktop <https://desktop.github.com/>
 
 ---
 
