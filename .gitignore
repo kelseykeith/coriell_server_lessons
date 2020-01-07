@@ -1,5 +1,6 @@
 ### folders to ignore
 server_basics/practice_directory/
+rnaseq/rnaseq_data/
 
 ### file types to ignore
 # the Mac index files
