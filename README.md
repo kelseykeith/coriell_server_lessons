@@ -103,5 +103,12 @@ Possible colors:
 
 ---
 
+### RNA-seq
 
+#### Process RNA-seq Week1 - *2020-01-07*
+
+Briefly went over how Illumina sequencing works and the types and structure of FastQ files. Also set up our project folders including GitHub repositories. The project documentation contains all of the commands we used today, except for where to find your SSH key, which is in the slides.
+
+- [slides](rnaseq/week1/process_rnaseq_week1.pdf)
+- [project documentation](rnaseq/week1/project_documentation.md)
 
