@@ -112,3 +112,9 @@ Briefly went over how Illumina sequencing works and the types and structure of F
 - [slides](rnaseq/week1/process_rnaseq_week1.pdf)
 - [project documentation](rnaseq/week1/project_documentation.md)
 
+#### Process RNA-seq Week2 - *2020-01-14*
+
+Went over the FastQC program and it's output report and why we trim reads. Ran FastQC and trimming. Will go over results of trimming next week. All commands used today are in both the slides and the project documentation.
+
+- [slides](rnaseq/week2/process_rnaseq_week2.pdf)
+- [project documentation](rnaseq/week2/project_documentation.md)
