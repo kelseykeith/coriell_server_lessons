@@ -118,3 +118,10 @@ Went over the FastQC program and it's output report and why we trim reads. Ran F
 
 - [slides](rnaseq/week2/process_rnaseq_week2.pdf)
 - [project documentation](rnaseq/week2/project_documentation.md)
+
+#### Process RNA-seq Week3 - *2020-01-21*
+
+Went over aligning reads and counting features. All the commands used today are in the slides and the project documentation.
+
+- [slides](rnaseq/week3/process_rnaseq_week3.pdf)
+- [project documentation](rnaseq/week3/project_documentation.md)
