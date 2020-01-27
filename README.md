@@ -11,6 +11,8 @@
 3. Download and install MacDown <https://macdown.uranusjr.com/>. You'll use this for documenting your work.
 4. Download and install Macfusion. Follow the directions [here](how_to_install_macfusion.md).  This will let you transfer files to and from your computer and the server. This is the hardest thing to install, so if it doesn't work come ask for help!
 5.  You should already have the Cisco AnyConnect VPN installed on your computer, but if you don't, follow the instructions [here](Cisco_AnyConnect_installation_instructions.pdf). This will allow you to connect to the server from outside of Coriell.
+6. Install R. Go to R Cloud <https://cloud.r-project.org/> and click on "Download R for (Mac) OS X" and follow the instructions and your computer prompts.
+7. Go to RStudio <https://rstudio.com/products/rstudio/download/> and download the **FREE** version for Mac, then follow the installation prompts.
 
 #### PC
 
@@ -19,6 +21,8 @@
 3. Download and install Joplin <https://joplinapp.org/>. You'll use this for documenting your work.
 4. Download and install WinSCP <https://winscp.net/eng/index.php>. This will let you transfer files to and from your computer and the server.
 5. You should already have the Cisco AnyConnect VPN installed on your computer, but if you don't, follow the instructions [here](Cisco_AnyConnect_installation_instructions.pdf). This will allow you to connect to the server from outside of Coriell.
+6. Install R. Go to R Cloud <https://cloud.r-project.org/> and click on "Download R for Windows" and follow the instructions and your computer prompts.
+7. Go to RStudio <https://rstudio.com/products/rstudio/download/> and download the **FREE** version for Windows, then follow the installation prompts.
 
 ---
 
@@ -26,6 +30,7 @@
 
 - tmux cheatsheet <https://gist.github.com/MohamedAlaa/2961058>
 - git book <https://git-scm.com/book/en/v2>
+- R for Data Science <https://r4ds.had.co.nz/>
 
 ---
 
@@ -125,3 +130,9 @@ Went over aligning reads and counting features. All the commands used today are 
 
 - [slides](rnaseq/week3/process_rnaseq_week3.pdf)
 - [project documentation](rnaseq/week3/project_documentation.md)
+
+#### Differential Expression - *2020-01-28*
+
+- differential expression demo [Rmd](rnaseq/week4/diff_exp_w_DESeq2.Rmd), [html](rnaseq/week4/diff_exp_w_DESeq2.html)
+- References
+  - `DESeq2` [Vignette](https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#annotating-and-exporting-results)
