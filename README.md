@@ -135,4 +135,14 @@ Went over aligning reads and counting features. All the commands used today are 
 
 - differential expression demo [Rmd](rnaseq/week4/diff_exp_w_DESeq2.Rmd), [html](rnaseq/week4/diff_exp_w_DESeq2.html)
 - References
-  - `DESeq2` [Vignette](https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#annotating-and-exporting-results)
+  - `DESeq2` [Vignette](https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html)
+- Packages Used
+  - [tidyverse](https://cran.r-project.org/web/packages/tidyverse/index.html)
+  - [conflicted](https://cran.r-project.org/web/packages/conflicted/index.html)
+  - [vroom](https://cran.r-project.org/web/packages/vroom/index.html)
+  - [BiocManager](https://www.bioconductor.org/install/)
+  - [DESeq2](http://bioconductor.org/packages/release/bioc/html/DESeq2.html)
+  - [fastcluster](https://cran.r-project.org/web/packages/fastcluster/index.html)
+  - [ggdendro](https://cran.r-project.org/web/packages/ggdendro/index.html)
+  - [AnnotationDbi](https://bioconductor.org/packages/release/bioc/html/AnnotationDbi.html)
+  - [org.Hs.eg.db](http://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html)
