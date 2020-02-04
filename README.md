@@ -131,7 +131,9 @@ Went over aligning reads and counting features. All the commands used today are 
 - [slides](rnaseq/week3/process_rnaseq_week3.pdf)
 - [project documentation](rnaseq/week3/project_documentation.md)
 
-#### Differential Expression - *2020-01-28*
+#### Differential Expression Week 1 - *2020-01-28*
+
+We went over importing, wrangling, and filtering data before testing.
 
 - differential expression demo [Rmd](rnaseq/week4/diff_exp_w_DESeq2.Rmd), [html](rnaseq/week4/diff_exp_w_DESeq2.html)
 - References
@@ -146,3 +148,9 @@ Went over aligning reads and counting features. All the commands used today are 
   - [ggdendro](https://cran.r-project.org/web/packages/ggdendro/index.html)
   - [AnnotationDbi](https://bioconductor.org/packages/release/bioc/html/AnnotationDbi.html)
   - [org.Hs.eg.db](http://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html)
+
+#### Differential Expression Week 2 - *2020-02-04*
+
+We went over pre-testing visualization, testing, and results visualization.
+
+- differential expression demo code, with updates from today [Rmd](rnaseq/week5/diff_exp_w_DESeq2_edited_2020-02-04.Rmd)
