@@ -1,0 +1,77 @@
+---
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(magrittr)
+library(conflicted)
+
+filter <- dplyr::filter
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## GSEA Examples
+*2020-02-09*
+
+Generating some plots and doing some calculations to explain how GSEA works.
+
+```{r}
+toy_exp <- tibble(gene = c('RAD51', 'NCAM2', 'ACTB', 'GAPDH', 'ERCC2',
+                           'KDM2B', 'KDM2A', 'SETD4', 'KDM1B', 'KDM1A'),
+                  rank = 1:10,
+                  in_pathway = c(F, F, F, F, F,
+                                 T, T, F, T, T),
+                  fold_change = c(-0.53, -0.22, -0.01, 0.05, 1.20,
+                                  2.80, 3.50, 3.60, 3.80, 4.00),
+                  cum_sum = c(0.53, 0.75, 0.76, 0.71, -0.49, 
+                              2.31, 5.81, 2.20, 6.00, 10.00))
+```
+
+```{r, fig.width = 4, fig.height = 4}
+rbind(toy_exp, tibble(gene = 'dummy', rank = 11, in_pathway = F, 
+                      fold_change = 0, cum_sum = 0)) %>%
+  
+ggplot(aes(x = rank, y = cum_sum)) +
+  geom_hline(yintercept = 0, linetype = 'dashed', color = 'gray80') +
+  geom_line(color = 'firebrick4', size = 1) +
+  labs(x = 'Gene Rank', y = 'Running Enrichment Score') +
+  coord_cartesian(ylim = c(-5, 10)) +
+  theme_classic(base_size = 14)
+ggsave('fake_gsea_cum_dist_plot.png')
+```
+
+```{r}
+set.seed(42)
+rt(n = 1000, df = 9) %>%
+  enframe(name = 'permutation', value = 't') -> fake_permutations
+```
+
+```{r, fig.width = 4, fig.height = 4}
+ggplot(fake_permutations, aes(x = t)) +
+  geom_histogram(fill = 'gray95', color = 'black', bins = 25) +
+  geom_vline(xintercept = 3, color = 'firebrick3') +
+  labs(x = 'Permuted t-Statistic', y = '') +
+  theme_classic(base_size = 14)
+#ggsave('perm_test_no_line.png')
+#ggsave('perm_test_score_line.png')
+```
+
+Calculate p-value
+
+```{r}
+fake_permutations %>%
+  mutate(greater_10 = ifelse(t >= 3, 1, 0)) %>%
+  group_by(greater_10) %>%
+  count() %>%
+  ungroup()
+```
+
+
+
+
+
+
+
+

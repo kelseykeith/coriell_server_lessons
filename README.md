@@ -154,3 +154,16 @@ We went over importing, wrangling, and filtering data before testing.
 We went over pre-testing visualization, testing, and results visualization.
 
 - differential expression demo code, with updates from today [Rmd](rnaseq/week5/diff_exp_w_DESeq2_edited_2020-02-04.Rmd)
+
+#### Differential Expression Week 3 - *2020-02-11*
+
+We went over gene set enrichment analysis (GSEA) using the `fgsea` package in R.
+
+- [slides](rnaseq/week6/how_gsea_works.pdf)
+- `fgsea` demo code [Rmd]()
+- References
+  - `fgsea` [documentation](https://bioconductor.org/packages/release/bioc/html/fgsea.html), preprint [link](http://biorxiv.org/content/10.1101/060012v2), [pdf](rnaseq/week6/fgsea_preprint.pdf)
+  - Stephen Turner's `fgsea` tutorial <https://stephenturner.github.io/deseq-to-fgsea/>
+  - GSEA website <gsea-msigdb.org/gsea/index.jsp>
+  - original GSEA paper [link](https://doi.org/10.1073/pnas.0506580102), [pdf](rnaseq/week6/gsea_paper.pdf)
+  - Reactome <reactome.org>

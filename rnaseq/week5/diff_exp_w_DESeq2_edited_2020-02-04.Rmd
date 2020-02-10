@@ -166,7 +166,7 @@ data %>%
 #### Convert to DESeq2 DESeqDataSet Object
 
 Use the helper function `DESeqDataSetFromMatrix()` to put our data into a `DESeqDAtaSet` object.
-
+  
 ```{r}
 # given the function the count and metadata tables
 dds <- DESeqDataSetFromMatrix(countData = count_matrix,
