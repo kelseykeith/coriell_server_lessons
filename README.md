@@ -160,10 +160,13 @@ We went over pre-testing visualization, testing, and results visualization.
 We went over gene set enrichment analysis (GSEA) using the `fgsea` package in R.
 
 - [slides](rnaseq/week6/how_gsea_works.pdf)
-- `fgsea` demo code [Rmd](rnaseq/week6/gene_set_enrichment_analysis.Rmd)
+- `fgsea` demo code [Rmd](rnaseq/week6/gene_set_enrichment_analysis.Rmd), updated code from today with how to translate gene names to Entrez IDs [Rmd](rnaseq/week6/gene_set_enrichment_analysis_2020-02-11_inclass.Rmd)
 - References
   - `fgsea` [documentation](https://bioconductor.org/packages/release/bioc/html/fgsea.html), preprint [link](http://biorxiv.org/content/10.1101/060012v2), [pdf](rnaseq/week6/fgsea_preprint.pdf)
   - Stephen Turner's `fgsea` tutorial <https://stephenturner.github.io/deseq-to-fgsea/>
   - GSEA website <https://gsea-msigdb.org/gsea/index.jsp>
   - original GSEA paper [link](https://doi.org/10.1073/pnas.0506580102), [pdf](rnaseq/week6/gsea_paper.pdf)
   - Reactome <https://reactome.org>
+- Packages
+  - `fgsea` <https://bioconductor.org/packages/release/bioc/html/fgsea.html>
+  - `reactome.db` <https://bioconductor.org/packages/release/data/annotation/html/reactome.db.html>
