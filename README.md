@@ -170,3 +170,17 @@ We went over gene set enrichment analysis (GSEA) using the `fgsea` package in R.
 - Packages
   - `fgsea` <https://bioconductor.org/packages/release/bioc/html/fgsea.html>
   - `reactome.db` <https://bioconductor.org/packages/release/data/annotation/html/reactome.db.html>
+
+---
+ 
+### Reduced Representation Bisulfite Sequencing (RRBS)
+ 
+#### RRBS Week 1 - *2020-02-21*
+
+- slides
+- [code](rrbs/README.md)
+- References
+  - Bismark website <http://www.bioinformatics.babraham.ac.uk/projects/bismark/>
+  - Bismark GitHub repository <https://github.com/FelixKrueger/Bismark>
+ 
+ 
