@@ -189,8 +189,8 @@ We went over RRBS and ran quality control on our sample files.
 
 We finished running through the RRBS processing pipeline. Note the change in the final methylation count / methylation extraction command to delete the unnecessary read level methylation context files.
 
-- [slides](rrbs/week1/process_rrbs_week1.pdf)
-- [code](rrbs/week1/process_rrbs_documentation_week1.md)
+- [slides](rrbs/week2/process_rrbs_week2.pdf)
+- [code](rrbs/week2/process_rrbs_documentation_week2.md)
 - References
   - Bismark website <http://www.bioinformatics.babraham.ac.uk/projects/bismark/>
   - Bismark GitHub repository <https://github.com/FelixKrueger/Bismark>
