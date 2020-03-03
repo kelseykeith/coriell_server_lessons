@@ -175,11 +175,25 @@ We went over gene set enrichment analysis (GSEA) using the `fgsea` package in R.
  
 ### Reduced Representation Bisulfite Sequencing (RRBS)
  
-#### RRBS Week 1 - *2020-02-21*
+#### Process RRBS Week 1 - *2020-02-21*
+
+We went over RRBS and ran quality control on our sample files.
 
 - [slides](rrbs/week1/process_rrbs_week1.pdf)
-- [code](rrbs/README.md)
+- [code](rrbs/week1/process_rrbs_documentation_week1.md)
 - References
   - Bismark website <http://www.bioinformatics.babraham.ac.uk/projects/bismark/>
   - Bismark GitHub repository <https://github.com/FelixKrueger/Bismark>
+
+#### Process RRBS Week 2 - *2020-03-03*
+
+We finished running through the RRBS processing pipeline. Note the change in the final methylation count / methylation extraction command to delete the unnecessary read level methylation context files.
+
+- [slides](rrbs/week1/process_rrbs_week1.pdf)
+- [code](rrbs/week1/process_rrbs_documentation_week1.md)
+- References
+  - Bismark website <http://www.bioinformatics.babraham.ac.uk/projects/bismark/>
+  - Bismark GitHub repository <https://github.com/FelixKrueger/Bismark>
+
+#### Analyze RRBS Week 1 - *2020-03-10*
  

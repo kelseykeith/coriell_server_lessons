@@ -42,7 +42,7 @@ cp -r /home/kkeith/data/coriell_bioinformatics_lessons/rrbs ./
 # from trim directory
 [kkeith]$ cd ../02_align/
 [kkeith]$ mkdir ../03_extract_meth
-[kkeith]$ for i in *.bam; do bismark_methylation_extractor --paired-end --include-overlap --bedGraph --output ../03_extract_meth $i; done
+[kkeith]$ for i in *.bam; do bismark_methylation_extractor --paired-end --include_overlap --bedGraph --output ../03_extract_meth $i; rm -f ../03_extract_meth/CHG_OB_${i/.bam/.txt} ../03_extract_meth/CHG_OT_${i/.bam/.txt} ../03_extract_meth/CHH_OB_${i/.bam/.txt} ../03_extract_meth/CHH_OT_${i/.bam/.txt} ../03_extract_meth/CpG_OB_${i/.bam/.txt} ../03_extract_meth/CpG_OT_${i/.bam/.txt}; done
 ```
 
 
