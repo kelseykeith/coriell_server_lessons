@@ -197,3 +197,8 @@ We finished running through the RRBS processing pipeline. Note the change in the
 
 #### Analyze RRBS Week 1 - *2020-03-10*
  
+- [data](rrbs/week3/data/)
+- [code](rrbs/week3/rrbs/week3/differential_methylation.Rmd)
+- Packages
+  - `broom` vignette <https://cran.r-project.org/web/packages/broom/vignettes/broom.html>
+  - `patchwork` <https://patchwork.data-imaginist.com/>

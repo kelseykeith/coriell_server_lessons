@@ -1,0 +1,662 @@
+---
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(magrittr)
+library(conflicted)
+
+library(ggdendro)
+library(patchwork)
+
+filter <- dplyr::filter
+
+# theme_set(theme_classic(base_size = 20))
+# knitr::opts_chunk$set(echo = TRUE, fig.width = 4, fig.height = 3)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<br><br>
+
+# Differential Methylation
+
+We'll be performing differential methylation with the goal of identifying CpG sites that change with age.
+
+-
+
+The samples we have been using are, again, from part of a larger project of Woonbok's to identify CpGs that are good biomarkers of age and to develop a simple, high-throughput test for them. Bella prepared all the RRBS libraries. 
+
+| Sample ID | Sex | Age |
+| --- | --- | --- |
+| f24 | female | 24 |
+| f77 | female | 77 |
+| f78 | female | 78 |
+| m22 | male | 22 |
+| m24 | male | 24 |
+| m78 | male | 78 |
+
+---
+
+## Install Packages
+
+```{r}
+### The broom package is for transforming the results of statistical tests into
+### rectangular table format
+# install.packages('broom')
+
+### patchwork allows you to plot multiple ggplots in complex arrangements (more
+### power and flexibility than cowplot)
+# install.packages('patchwork')
+```
+
+<br>
+
+## Read / Wrangle Files
+
+### Get the Data
+
+Download the files from the course website <URL HERE> and place them in the working directory of your `.Rmd` file.
+
+### Read Files in Recursively
+
+```{r}
+# get list of files
+list.files(path = 'data',
+           pattern = '.cov.gz$',
+           full.names = T) -> files
+
+# read files in recursively
+vroom::vroom(files, id = 'file_path',
+             col_names = c('chr', 'start', 'end', 
+                           'meth_percent', 'numCs', 'numTs')) %>%
+  filter(chr == 'chr21') %>%
+  unite(chr_base, chr, start, remove = FALSE) %>%
+# calculate coverage
+  mutate(coverage = numCs + numTs,
+# extract the sample ID and sample information, age and sex from the file names
+         sample_id = str_extract(file_path, '[mf][0-9]{2}'),
+         age = as.integer(str_extract(sample_id, '\\d+')),
+         sex = ifelse(str_detect(sample_id, 'f'), 'F', 'M'),
+# add a categorical version of age for easy plot coloring
+         age_cat = ifelse(age < 35, 'young', 'old')) %>%
+# drop the file paths
+  select(-file_path) -> data
+```
+
+### Filter Data
+
+We need to filter our data for CpG sites that are covered by a good number of reads, so we can have confidence in our measurements. The issue is, as illustrated in the density plot below, the majority of sites are covered by a few reads, with  Coverage greater than 10 reads in 75% of the samples for each CpG.
+
+```{r}
+ggplot(data, aes(x = coverage)) +
+  geom_density() +
+  coord_cartesian(xlim = c(0, 100)) +
+  geom_vline(xintercept = 10, color = 'red') +
+  theme_classic(base_size = 20)
+```
+
+Standard practice is to keep CpGs that have greater than 10 reads in 75% of the samples. Since `6 * 0.75 = 4.5`, we'll be generous and keep sites that have more than 10 reads in. We'll also drop CpG sites that have the same methylation in all samples, by calculating the standard deviation for all sites and dropping sites with a standard deviation of 0. These are obviously not differentially methylated, so there's no reason to test them and increase our multiple testing penalty.
+
+```{r}
+data %>%
+# group by chr and start so the subsequence calcuations are performed for all
+# CpG sites
+  group_by(chr, start) %>%
+# calculate the number of samples that have 10 or more reads for each CpG
+  mutate(samp_count = sum(coverage >= 10),
+# calculate the standard deviation of percent methylation for each CpG
+         stdev = sd(meth_percent)) %>% 
+# ungroup so the following actions are taken normally on the whole table
+  ungroup() %>% 
+# filter for samples with 10 reads in 75% (4 out of 6 samples) and that have 
+# some variation
+  filter(samp_count >= 4, stdev != 0) %>%
+# drop the extra columns we created to filter the data
+  select(-samp_count, -stdev) -> data_filtered
+```
+
+<br>
+
+---
+
+<br>
+
+## Check Quality
+
+### Coverage
+
+If the number of reads sequenced is too low, would need to sequence more.
+
+```{r}
+data %>%
+  mutate(coverage = ifelse(coverage <= 100, coverage, 100)) %>%
+
+ggplot(aes(x = coverage)) +
+  geom_histogram(fill = 'deepskyblue3', color = 'black', bins = 25) +
+  facet_wrap(~ sample_id) +
+  theme_classic(base_size = 20)
+```
+
+### Percent Methylation
+
+The methylation percentage should follow a bimodal distribution, with peaks at 0% and 100%. If it doesn't, there's a problem with that sample and it should be corrected or excluded.
+
+```{r}
+ggplot(data, aes(x = meth_percent)) +
+  geom_histogram(fill = 'forestgreen', color = 'black', bins = 25) +
+  facet_wrap(~ sample_id) +
+  labs(x = 'Percent Methylation') +
+  theme_classic(base_size = 20)
+```
+
+### Hierarchical Clustering
+
+To check the similarity between our samples, we went to see if the samples cluster (relatively) by condition or covariates like age and sex. It does make a difference whether we do this with all the data or with the filtered data, so we'll compare results.
+
+---
+
+First, we'll calculate and plot the hierarchical clustering for the whole dataset.
+
+```{r}
+### calculate clustering
+# calculate the distances and clustering for the tree
+data %>%
+  select(chr_base, sample_id, meth_percent) %>%
+  pivot_wider(names_from = sample_id, values_from = meth_percent) %>%
+  na.omit() %>%
+  as.data.frame() %>%
+  column_to_rownames('chr_base') %>%
+# Whatever you want to visualize on the branches needs to be on the rows of the
+# table, so swap rows and columns
+  t() %>%
+# hclust() requires the distance between samples to be precalculated
+  dist(.) %>% 
+# calculate the clusterin
+  fastcluster::hclust() %>%
+# transforms the hclust object into the dendrogram class for tree structures
+  as.dendrogram() %>%
+# From the ggdendro package, a helper function that transforms the dendrogram 
+# object into a group of tables that can be used to plot the tree with ggplot
+  dendro_data() -> clust
+
+### reformat for plotting
+# rewrite the label table from the ggdendro object so you can add a column to 
+# color by
+clust$labels %>% 
+  mutate(age = as.integer(str_extract(label, '\\d+')),
+         age_cat = ifelse(age <= 35, 'young', 'old'),
+         sex = ifelse(str_detect(label, 'f'), 'female', 'male')) -> clust_labels
+
+######
+
+### plot
+# plot with ggplot2, colored by categorical age
+ggplot() +
+  geom_segment(data = clust$segments, 
+               aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_text(data = clust_labels, 
+            aes(x = x, y = y, label = label, color = age_cat), 
+            vjust = 1.1) +
+  scale_color_manual(name = 'age', values = c('forestgreen', 'gold3')) +
+  coord_cartesian(ylim = c(-100, max(clust$segments$yend)),
+                  xlim = c(0.5, 6.5)) +
+  theme_classic() +
+  theme(axis.title = element_blank(), 
+        axis.line = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank()) -> hier_age
+
+# plot with ggplot2, colored by categorical age
+ggplot() +
+  geom_segment(data = clust$segments, 
+               aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_text(data = clust_labels, 
+            aes(x = x, y = y, label = label, color = sex), 
+            vjust = 1.1) +
+  scale_color_manual(values = c('hotpink3', 'dodgerblue3')) +
+  coord_cartesian(ylim = c(-100, max(clust$segments$yend)),
+                  xlim = c(0.5, 6.5)) +
+  theme_classic() +
+  theme(axis.title = element_blank(), 
+        axis.line = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank()) -> hier_sex
+```
+
+Second, we'll calculate the clustering on the filtered dataset.
+
+```{r}
+### calculate clustering
+# calculate the distances and clustering for the tree
+data_filtered %>%
+  select(chr_base, sample_id, meth_percent) %>%
+  pivot_wider(names_from = sample_id, values_from = meth_percent) %>%
+  na.omit() %>%
+  as.data.frame() %>%
+  column_to_rownames('chr_base') %>%
+# Whatever you want to visualize on the branches needs to be on the rows of the
+# table, so swap rows and columns
+  t() %>%
+# hclust() requires the distance between samples to be precalculated
+  dist(.) %>% 
+# calculate the clusterin
+  fastcluster::hclust() %>%
+# transforms the hclust object into the dendrogram class for tree structures
+  as.dendrogram() %>%
+# From the ggdendro package, a helper function that transforms the dendrogram 
+# object into a group of tables that can be used to plot the tree with ggplot
+  dendro_data() -> clust_filt
+
+### reformat for plotting
+# rewrite the label table from the ggdendro object so you can add a column to 
+# color by
+clust_filt$labels %>% 
+  mutate(age = as.integer(str_extract(label, '\\d+')),
+         age_cat = ifelse(age <= 35, 'young', 'old'),
+         sex = ifelse(str_detect(label, 'f'), 'female', 'male')) -> clust_filt_labels
+
+######
+
+### plot
+# plot with ggplot2, colored by categorical age
+ggplot() +
+  geom_segment(data = clust_filt$segments, 
+               aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_text(data = clust_filt_labels, 
+            aes(x = x, y = y, label = label, color = age_cat), vjust = 1.1) +
+  scale_color_manual(name = 'age', values = c('forestgreen', 'gold3')) +
+  coord_cartesian(ylim = c(-100, max(clust$segments$yend)),
+                  xlim = c(0.5, 6.5)) +
+  theme_classic() +
+  theme(axis.title = element_blank(), 
+        axis.line = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank()) -> hier_age_filt
+
+# plot with ggplot2, colored by categorical age
+ggplot() +
+  geom_segment(data = clust_filt$segments, 
+               aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_text(data = clust_filt_labels, 
+            aes(x = x, y = y, label = label, color = sex), 
+            vjust = 1.1) +
+  scale_color_manual(values = c('hotpink3', 'dodgerblue3')) +
+  coord_cartesian(ylim = c(-100, max(clust$segments$yend)),
+                  xlim = c(0.5, 6.5)) +
+  theme_classic() +
+  theme(axis.title = element_blank(), 
+        axis.line = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank()) -> hier_sex_filt
+```
+
+Let's compare the full data vs the filtered data, colored by two different variables, age and sex.
+
+```{r}
+((hier_age | hier_age_filt) / (hier_sex | hier_sex_filt)) + 
+  plot_layout(guides = 'collect')
+```
+
+### PCA
+
+Same idea as the hierarchical clustering, we want to examine the similarity between our data and how it clusters by variables. We'll also compare running the PCA on the full dataset vs the filtered data.
+
+---
+
+First, calculated and plot the PCA on the full dataset.
+
+```{r}
+### calculate the PCA
+data %>%
+# PCA needs the data to be in wide format with samples as rows and CpGs as
+# columns; we'll pivot the table wider first, so we can drop CpG sites missing
+# data in some samples, then transpose the table and calculate the PCA
+  select(chr_base, sample_id, meth_percent) %>%
+  pivot_wider(names_from = 'sample_id', values_from = 'meth_percent') %>%
+  as.data.frame() %>%
+  column_to_rownames('chr_base') %>%
+  na.omit() %>%
+  t() %>% 
+# To calculate the PCA, we will center the data, but not scale it, because 
+# methylation data is already scaled from 0% to 100%.
+  prcomp(center = T, scale = F) -> pca_data
+
+######
+
+### format results for plotting
+# Get the percent variance explained by each PC and save it to a table for
+# plotting
+tibble(var_explained = ((pca_data$sdev) ^ 2 / (sum(pca_data$sdev ^ 2)))) %>%
+  mutate(PC = colnames(pca_data$x)) -> pca_data_scree
+
+# The coordinates to plot the PCA are in the x table of the PCA object.
+pca_data$x %>%
+  as.data.frame() %>%
+  rownames_to_column('sample_id') %>%
+# Add variables back in to color by.
+  mutate(sex = ifelse(str_detect(sample_id, 'f'), 'female', 'male'),
+         age = as.integer(str_extract(sample_id, '\\d+')),
+         age_cat = ifelse(age <= 35, 'young', 'old')) -> pca_data_pcs
+
+######
+
+### plot
+# PCA colored by age
+ggplot(pca_data_pcs, aes(x = PC1, y = PC2)) +
+  geom_point(aes(color = age_cat)) +
+  scale_color_manual(name = 'age', values = c('forestgreen', 'gold3')) +
+#  ggrepel::geom_label_repel(aes(label = sample_id)) +
+  theme_classic() -> pca_age_all
+
+# PCA colored by sex
+ggplot(pca_data_pcs, aes(x = PC1, y = PC2)) +
+  geom_point(aes(color = sex)) +
+  scale_color_manual(values = c('hotpink3', 'dodgerblue3')) +
+#  ggrepel::geom_label_repel(aes(label = sample_id)) +
+  theme_classic() -> pca_sex_all
+
+# scree plot
+ggplot(pca_data_scree, aes(x = PC, y = var_explained)) +
+  geom_col() +
+  geom_text(aes(y = var_explained + 0.02, 
+                label = round(var_explained * 100, 1)), size = 3) +
+  labs(y = '% Variance Explained by PC') +
+  theme_classic() -> scree_all
+```
+
+Second, with the filtered data.
+
+```{r}
+data_filtered %>%
+# PCA needs the data to be in wide format with samples as rows and CpGs as
+# columns; we'll pivot the table wider first, so we can drop CpG sites missing
+# data in some samples, then transpose the table and calculate the PCA
+  select(chr_base, sample_id, meth_percent) %>%
+  pivot_wider(names_from = 'sample_id', values_from = 'meth_percent') %>%
+  as.data.frame() %>%
+  column_to_rownames('chr_base') %>%
+  na.omit() %>%
+  t() %>% 
+# To calculate the PCA, we will center the data, but not scale it, because 
+# methylation data is already scaled from 0% to 100%.
+  prcomp(center = T, scale = F) -> pca_data_filt
+
+######
+
+### format results for plotting
+# Get the percent variance explained by each PC and save it to a table for
+# plotting
+tibble(var_explained = ((pca_data_filt$sdev) ^ 2 / (sum(pca_data_filt$sdev ^ 2)))) %>%
+  mutate(PC = colnames(pca_data_filt$x)) -> pca_data_scree_filt
+
+# The coordinates to plot the PCA are in the x table of the PCA object.
+pca_data_filt$x %>%
+  as.data.frame() %>%
+  rownames_to_column('sample_id') %>%
+  # Add variables back in to color by.
+  mutate(sex = ifelse(str_detect(sample_id, 'f'), 'female', 'male'),
+         age = as.integer(str_extract(sample_id, '\\d+')),
+         age_cat = ifelse(age <= 35, 'young', 'old')) -> pca_data_filt
+
+######
+
+### plot
+# PCA colored by age
+ggplot(pca_data_filt, aes(x = PC1, y = PC2)) +
+  geom_point(aes(color = age_cat)) +
+  scale_color_manual(name = 'age', values = c('forestgreen', 'gold3')) +
+#  ggrepel::geom_label_repel(aes(label = sample_id)) +
+  theme_classic() -> pca_age_filt
+
+# PCA colored by sex
+ggplot(pca_data_filt, aes(x = PC1, y = PC2)) +
+  geom_point(aes(color = sex)) +
+  scale_color_manual(values = c('hotpink3', 'dodgerblue3')) +
+#  ggrepel::geom_label_repel(aes(label = sample_id)) +
+  theme_classic() -> pca_sex_filt
+
+# scree plot
+ggplot(pca_data_scree_filt, aes(x = PC, y = var_explained)) +
+  geom_col() +
+  geom_text(aes(y = var_explained + 0.02, 
+                label = round(var_explained * 100, 1)), size = 3) +
+  labs(y = '% Variance Explained by PC') +
+  theme_classic() -> scree_filt
+```
+
+Let's compare the full data vs the filtered data, colored by two different variables, age and sex.
+
+```{r}
+((scree_all | pca_age_all | pca_sex_all) / (scree_filt | pca_age_filt | pca_sex_filt)) + 
+  plot_layout(guides = 'collect')
+```
+
+<br>
+
+---
+
+<br>
+
+## Test
+
+### t-test
+
+#### How does a t-test work in R and why do we need the `broom` package? A review
+
+`mtcars` is a dataset package with R often used to illustrate examples. The data comes from the 1974 edition of Motor Trend magazine and you can learn more about it through the help documentation (which remember you can easily get by typing `?mtcars` into the R console).
+
+```{r, fig.width = 4, fig.height = 4}
+### Look at the data table first
+mtcars
+# Plot the variables of interest, horsepower (hp) and gase mileage (mpg)
+ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point() +
+  theme_classic(base_size = 20)
+
+### R is old and dumb sometimes
+### Fun fact! R 1.0.0 was released February 29, 2000, but it existed as S before
+### that, which was written in 1976, so sometimes there are *odd* choices like
+### statistical tests that mostly print to the console.
+# Run a t-test! Remember you give it measured variable ~ response variable.
+t.test(mtcars$mpg ~ mtcars$vs) -> ttest_example
+# Look at the results of the t-test
+ttest_example
+# You can get the values out of the object with $ subsetting, but it's annoying
+ttest_example$p.value
+ttest_example$conf.int
+
+# The broom package converts the results of tests into a rectangular table.
+t.test(mtcars$mpg ~ mtcars$vs) %>% broom::tidy()
+```
+
+#### Run t-tests for each CpG in our data
+
+We are going to loop over each CpG using the `purrr` package (comes with the tidyverse)
+
+```{r}
+data_filtered %>%
+# combine the chr and position information so we have one column indicating the
+# CpG
+  unite(chr_base, chr, start) %>%
+# Create a nested table
+  nest(-chr_base) %>%
+# Calculate the t-test for each CpG; the try() function allows the loops to 
+# continue if there's a problem with one CpG and the test fails
+  mutate(test = map(data, ~ try(t.test(.$meth_percent ~ .$age_cat))),
+# Find the class of each t-test, so we can filter out any CpG sites that fail
+# testing
+         class = map(test, ~ class(.))) %>%
+# Unpack the class column and filter out anything that was not able to be 
+# tested, class == 'try-error'
+  unnest(c(class)) %>% #distinct(class)
+  filter(class != 'try-error') %>%
+  select(-class, -data) %>%
+# Unpack the test results so we have a rectangular table again.
+  unnest(test = map2(test, chr_base, ~broom::tidy(.x, newdata = .y))) %>%
+# Correct the p-values for multiple testing
+  mutate(qvalue = p.adjust(p.value, method = 'fdr'),
+# Calculate the negative log10 qvalue for plotting later
+         log_qvalue = -log10(qvalue),
+         log_pvalue = -log10(p.value),
+# Also indicate whether or not the CpG is significantly differentially 
+# methylated for easier plotting later
+# NOTE: I DID THIS WITH P-VALUES BECAUSE NOTHING WAS SIGNIFICANT AFTER 
+# CORRECTION BUT FOR A REAL ANALYSIS YOU MUST USE Q-VALUES
+         sig = ifelse(abs(estimate) > 5 & p.value < 0.05, 'sig', 'notsig'),
+# reverse the direction of the estimate because it tests in alphabetical order
+         estimate = -estimate) %>%
+# Drop some useless or redundant columns
+  select(-method, -alternative, -parameter) -> ttests
+```
+
+Save results
+
+```{r}
+#write_tsv(ttests, 'ttest_results.tsv')
+```
+
+#### Visualize `t.test()` Results with a Volcano Plot
+
+Remember, a volcano plot is a type of scatterplot with the difference in values plotted on the x-axis and the significance of those values plotted on the y-axis. For methylation, we'll plot the difference in percent methylation, the estimate column in the tables and the log qvalue on the y-axis..
+
+```{r, fig.width = 6, fig.height = 6}
+# Create labels for the number and percentage of significantly up- and down- 
+# regulated genes
+ttests %>%
+  mutate(direction = ifelse(estimate < 0, 'down', 'up')) %>%
+  group_by(direction, sig) %>%
+  dplyr::count() %>%
+  ungroup() %>%
+  complete(direction, sig, fill = list(n = 0)) %>%
+  na.omit() %>%
+  filter(sig == 'sig') %>%
+  mutate(label = paste0(n, ', ', round((n / nrow(ttests)), 1), '%'),
+# Remember, these numbers indicate the x- and y- positions of your labels and
+# will need manually adjustment based on the plot
+         estimate = c(-30, 30),
+         log_pvalue = 3) -> volc_labels_ttest
+
+# plot
+ggplot(ttests, aes(x = estimate, y = log_pvalue)) +
+  geom_point(aes(color = sig)) +
+  scale_color_manual(values = c('gray30', 'firebrick3')) +
+  geom_hline(yintercept = -log10(0.05), color = 'gray60', linetype = 'dashed') +
+  geom_vline(xintercept = c(-5, 5), color = 'gray60', linetype = 'dashed') +
+  geom_text(data = volc_labels_ttest, aes(label = label), size = 8) +
+  labs(x = 'Difference in % Methylation', y = '-Log10 P-Value') +
+  theme_classic(base_size = 20) +
+  theme(legend.position = 'none')
+```
+
+### Linear Model
+
+#### Single linear model example
+
+We're going to review how a linear model is calculated, 
+
+```{r}
+# We'll use the same data as before for this linear model example. We format the
+# test in the same way, using the lm() function instead of the t.test() function.
+# The only difference is you can use data = table_name in lm() instead of using
+# .$column_name like you need to for t.test()
+lm(hp ~ mpg, data = mtcars) -> example_lm
+# Look at the results
+example_lm
+# Again, you can get results inconveniently 
+example_lm$coefficients
+
+# Broom to the rescue. One thing to not about linear models is the intercept 
+# doesn't usually make biological sense and we don't have anything to
+# do with it, so we almost always discard it. It also doesn't make sense here;
+# you'd interpret it when you gas mileage equals 0, your horsepower equals ~324
+# which doesn't make sense
+example_lm %>% broom::tidy()
+# New function, broom::glance() gives you the model parameters rather than the
+# model results
+example_lm %>% broom::tidy()
+```
+
+#### Run linear models for each CpG in our data
+
+```{r}
+### Same code as the t-test code, except we're calculating  a linear model for 
+### each CpG and using broom::glance() as well as broom::tidy() to get the 
+### results
+data_filtered %>%
+  unite(chr_base, chr, start) %>%
+  nest(data = c(end, meth_percent, numCs, numTs, 
+                coverage, sample_id, age, sex, age_cat)) %>%
+# calculate linear model
+  mutate(test = map(data, ~ try(lm(meth_percent ~ age, data = .))),
+         class = map(test, ~ class(.))) %>%
+  unnest(c(class)) %>% #distinct(class)
+  filter(class != 'try-error') %>%
+  unnest(test_results = map2(test, chr_base, ~broom::tidy(.x, newdata = .y)),
+# use broom::glance() to get the model parameters, mainly adjusted r-squared
+         test_parameters = map2(test, chr_base, 
+                                ~broom::glance(.x, newdata = .y))) %>%
+# Intercepts don't make biological sense, so remove them
+  filter(term != '(Intercept)') %>%
+  mutate(qvalue = p.adjust(p.value, method = 'fdr'),
+         log_qvalue = -log10(qvalue),
+         log_pvalue = -log10(p.value),
+# NOTE: I DID THIS WITH P-VALUES BECAUSE NOTHING WAS SIGNIFICANT AFTER 
+# CORRECTION BUT FOR A REAL ANALYSIS YOU MUST USE Q-VALUES
+# Estimate is now % change per year, so swap the value to 0.1, which would be
+# 0.1% change per year
+         sig = ifelse(abs(estimate) > 0.1 & p.value < 0.05, 'sig', 'notsig')) %>%
+  select(chr_base, term, estimate, std.error, pvalue = p.value, log_pvalue, 
+         qvalue, log_qvalue, sig, r.squared, adj.r.squared, AIC, BIC) -> lms
+```
+
+Save results
+
+```{r}
+#write_tsv(lms, 'linear_model_results.tsv')
+```
+
+#### Visualize `lm()` Results with a Volcano Plot
+
+Remember, a volcano plot is a type of scatterplot with the difference in values plotted on the x-axis and the significance of those values plotted on the y-axis. For the linear model methylation, we'll plot the change in percent methylation, the estimate column in the tables and the log qvalue on the y-axis.
+
+```{r, fig.width = 6, fig.height = 6}
+# Create labels for the number and percentage of significantly up- and down- 
+# regulated genes
+lms %>%
+  mutate(direction = ifelse(estimate < 0, 'down', 'up')) %>%
+  group_by(direction, sig) %>%
+  dplyr::count() %>%
+  ungroup() %>%
+  complete(direction, sig, fill = list(n = 0)) %>%
+  na.omit() %>%
+  filter(sig == 'sig') %>%
+  mutate(label = paste0(n, ', ', round((n / nrow(ttests)), 1), '%'),
+# Remember, these numbers indicate the x- and y- positions of your labels and
+# will need manually adjustment based on the plot
+         estimate = c(-0.5, 0.5),
+         log_pvalue = 4) -> volc_labels_lms
+
+# plot
+ggplot(lms, aes(x = estimate, y = log_pvalue)) +
+  geom_point(aes(color = sig)) +
+  scale_color_manual(values = c('gray30', 'firebrick3')) +
+  geom_hline(yintercept = -log10(0.05), color = 'gray60', linetype = 'dashed') +
+  geom_vline(xintercept = c(-0.1, 0.1), color = 'gray60', linetype = 'dashed') +
+  geom_text(data = volc_labels_lms, aes(label = label), size = 8) +
+  labs(x = 'Change in % Methylation per Year', y = '-Log10 P-Value') +
+  theme_classic(base_size = 20) +
+  theme(legend.position = 'none')
+```
+
+<br><br>
+
+
+
+
+
+
+
+
+
+
